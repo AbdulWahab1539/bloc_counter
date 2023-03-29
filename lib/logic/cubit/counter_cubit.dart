@@ -1,11 +1,10 @@
-import 'package:equatable/equatable.dart';
+import 'dart:convert';
 
-import 'package:bloc_counter/logic/cubit/internet_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'counter_state.dart';
 
-class CounterCubit extends Cubit<CounterState> {
+class CounterCubit extends Cubit<CounterState> with HydratedMixin {
   // final InternetCubit internetCubit;
   // late StreamSubscription streamSubscription;
 
@@ -33,6 +32,28 @@ class CounterCubit extends Cubit<CounterState> {
   void decrement() => emit(
       CounterState(counterValue: state.counterValue - 1, isIncremented: false));
 
+  @override
+  CounterState? fromJson(Map<String, dynamic> json) {
+    return CounterState.fromMap(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(CounterState state) {
+    // addError(Exception("Could not write to storage"), StackTrace.current);
+    return state.toMap();
+  }
+
+  // @override
+  // void onChange(Change<CounterState> change) {
+  //   print(change);
+  //   super.onChange(change);
+  // }
+
+  // @override
+  // void onError(Object error, StackTrace stackTrace) {
+  //   print(error);
+  //   super.onError(error, stackTrace);
+  // }
   // @override
   // Future<void> close() {
   //   streamSubscription.cancel();
